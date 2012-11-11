@@ -1,0 +1,16 @@
+!!!
+html
+	head
+		include includes/head
+		block stylesheet
+	body
+		div.container
+			div.hd
+				block head
+			div.bd
+				div.main
+					block main
+				div.side
+					block side
+			include includes/foot
+		block script

@@ -1,0 +1,12 @@
+extends layout
+
+append head
+	h1 #{entry.title}
+	div.head-meta #{entry.time}
+
+append main
+	div.entry
+	|	!{entry.content}
+
+append side
+	include includes/info.jade

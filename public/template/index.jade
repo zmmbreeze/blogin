@@ -1,0 +1,30 @@
+extends layout
+
+append head
+	h1 #{site.name}
+
+append main
+	- if (items.length)
+		ul.articles
+			- items.forEach(function(item) {
+				li
+					a(href='#{item.url}', title='#{item.title}') #{item.title} 
+			- })
+	- if (pages.length)
+		ul.pages
+			- pages.forEach(function(item) {
+				li
+					a(href='#{item.url}', title='#{item.title}') #{item.title} 
+			- })
+
+append side
+	include includes/info.jade
+
+	- if (archives.length)
+		div.archives
+			h2 Archives
+			ul
+				- archives.forEach(function(item) {
+					li
+						a(href='#{item.url}', title='#{item.title}') #{item.title} 
+				- })

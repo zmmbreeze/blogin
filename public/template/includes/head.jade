@@ -1,0 +1,10 @@
+- if (pageName)
+	title.
+		#{site.name} - #{pageName}
+- else
+	title #{site.name}
+meta(charset='utf-8')
+meta(http-equiv='X-UA-Compatible', content='IE=edge')
+meta(name='keyword', content='#{site.keyword}')
+meta(name='description', content='#{site.description}')
+link(href='/public/stylesheet/style.css')

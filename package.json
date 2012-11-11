@@ -1,0 +1,33 @@
+{
+  "name": "blogin",
+  "version": "0.1.0",
+  "description": "A simple static blog framework, powered by Node.js.",
+  "preferGlobal": true,
+  "bin": {
+    "hexo": "./bin/blogin"
+  },
+  "directories": {
+    "lib": "./lib",
+    "bin": "./bin"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": "https://github.com/tommy351/hexo/issues"
+  },
+  "keywords": ["website", "blog", "framework", "static", "blogin"],
+  "author": "Mzhou <zmmbreeze0825@gmail.com> (http://mzhou.me)",
+  "license": {
+    "type": "MIT",
+    "url": ""
+  },
+  "dependencies": {
+    "connect": "*",
+    "cli-color": "*",
+    "moment": "*",
+    "jade": "*",
+    "markdown": "0.4.0"
+  }
+}
