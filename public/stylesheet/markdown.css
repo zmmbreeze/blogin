@@ -1,0 +1,544 @@
+/**
+ * Entry.css
+ *
+ * @author mzhou / @zhoumm
+ * @log 0.1
+ *      0.2 修改二级及更深层次的pre的四周都为圆角
+ *          修改li中第一层第一个p/div的不缩进
+ *          li之间的上下间距修改为0.25em
+ *      0.3 修改中文字体
+ *          修改abbr样式
+ *          修改li的list-type-position为inside
+ *      0.4 增加iframe支持,支持jsfiddle/speaker deck/slide share
+ *          支持disqus
+ *          修改四级标题样式，增加左边框
+ *          去掉header的border-bottom
+ *
+ */
+/* ===========================================================
+   Config
+   =========================================================== */
+/* ==========================================================================
+   Entry header
+   ========================================================================== */
+/* ==========================================================================
+   Entry content
+   ========================================================================== */
+.markdown {
+  margin: 0;
+  line-height: 1.62;
+  color: #666666;
+  word-wrap: break-word;
+  font-size: 14px;
+  font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  /* ==========
+       Typography
+       ========== */
+
+  /* === block content === */
+
+  /* === inline content === */
+
+  /* 强调 */
+
+  /* code */
+
+  /* image */
+
+  /* other */
+
+  /* 书名号(han.css) */
+
+  /* 缩写 */
+
+  /* 定义 */
+
+  /* 标记 */
+
+  /* 行内引用 */
+
+  /* 旁注 */
+
+  /* 上下标 */
+
+  /* disqus支持 */
+
+}
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6,
+.markdown div,
+.markdown p,
+.markdown blockquote,
+.markdown pre,
+.markdown ul,
+.markdown ol,
+.markdown table,
+.markdown figure,
+.markdown iframe {
+  margin: 0.5em 0 0 0;
+  padding: 0;
+}
+.markdown h1:first-child,
+.markdown h2:first-child,
+.markdown h3:first-child,
+.markdown h4:first-child,
+.markdown h5:first-child,
+.markdown h6:first-child,
+.markdown div:first-child,
+.markdown p:first-child,
+.markdown blockquote:first-child,
+.markdown pre:first-child,
+.markdown ul:first-child,
+.markdown ol:first-child,
+.markdown table:first-child,
+.markdown figure:first-child,
+.markdown iframe:first-child {
+  margin-top: 0;
+}
+.markdown iframe {
+  display: block;
+  /* fix slide share */
+
+}
+.markdown > h1,
+.markdown > h2,
+.markdown > h3,
+.markdown > h4,
+.markdown > h5,
+.markdown > h6,
+.markdown > div,
+.markdown > p,
+.markdown > blockquote,
+.markdown > pre,
+.markdown > ul,
+.markdown > ol,
+.markdown > table,
+.markdown > figure,
+.markdown > iframe {
+  max-width: 600px;
+  margin: 1em 0 0 0;
+  padding: 0 0 0 1em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  font-weight: bold;
+}
+.markdown h1,
+.markdown h2 {
+  font-size: 2em;
+  color: #ffffff;
+  background-color: #96b3d3;
+}
+.markdown h1 a,
+.markdown h2 a {
+  color: #ffffff;
+}
+.markdown h2 {
+  font-size: 1.5em;
+}
+.markdown h3 {
+  font-size: 1.2em;
+}
+.markdown h3:before {
+  display: inline-block;
+  content: '\27BD';
+  margin-right: 0.5em;
+  vertical-align: middle;
+  font-size: 1em;
+  color: #96b3d3;
+}
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  margin-bottom: -1em;
+}
+.markdown h4:before,
+.markdown h5:before,
+.markdown h6:before {
+  content: '　　';
+  display: inline;
+}
+.markdown h4:before,
+.markdown h5:before,
+.markdown h6:before {
+  margin-right: 0.5em;
+  border-right: 0.5em solid #CCC;
+}
+.markdown p,
+.markdown div {
+  /* text-indent: 2em; 避免继承，故不用 */
+
+}
+.markdown p:before,
+.markdown div:before {
+  content: '　　';
+  display: inline;
+}
+.markdown blockquote {
+  position: relative;
+  padding: 1em 4em;
+}
+.markdown blockquote div:before,
+.markdown blockquote p:before {
+  content: '';
+}
+.markdown blockquote:before {
+  position: absolute;
+  content: '\275D';
+  top: 0;
+  left: 1em;
+  font-size: 2em;
+  color: #cccccc;
+}
+.markdown blockquote:after {
+  position: absolute;
+  content: '\275E';
+  bottom: 0;
+  right: 1em;
+  margin-right: -0.25em;
+  font-size: 2em;
+  color: #cccccc;
+}
+.markdown pre {
+  padding: 1em 4em;
+  line-height: 1.5;
+  /* 强制设置行高，避免难看 */
+
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: monospace, serif;
+  font-size: 0.8571428571428571em;
+  /* 12px */
+
+  border: 1px solid #e1e1e8;
+  background-color: #f7f7f9;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  border-radius: 1em;
+}
+.markdown > pre {
+  -webkit-border-radius: 0 1em 1em 0;
+  -moz-border-radius: 0 1em 1em 0;
+  -ms-border-radius: 0 1em 1em 0;
+  -o-border-radius: 0 1em 1em 0;
+  border-radius: 0 1em 1em 0;
+}
+.markdown ul,
+.markdown ol {
+  margin-top: 1em;
+  padding-left: 4em;
+}
+.markdown ul li,
+.markdown ol li {
+  margin-top: 0.25em;
+  list-style-position: outside;
+  /* 如果是inside，且li第一个元素是block元素，那么Firefox下会移到下一行*/
+
+}
+.markdown ul li:first-child,
+.markdown ol li:first-child {
+  margin-top: 0;
+}
+.markdown li > ul,
+.markdown li > ol {
+  margin-top: 0;
+  padding-left: 3em;
+}
+.markdown li > p:first-child:before,
+.markdown li > div:first-child:before {
+  content: '';
+}
+.markdown hr {
+  position: relative;
+  margin: 3em auto 3em 0;
+  /* IE <= 9下如果margin-right: 0，那么会导致hr居中，而不是靠左*/
+
+  width: 600px;
+  height: 0;
+  background: none;
+  border: none;
+  border-bottom: 2px dashed #888888;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.markdown hr:before,
+.markdown hr:after {
+  content: '';
+  position: absolute;
+  width: 30%;
+  height: 2px;
+  pointer-events: none;
+}
+.markdown hr:before {
+  left: 0;
+  right: auto;
+  background-image: -webkit-linear-gradient(right, rgba(255, 255, 255, 0) 0%, #ffffff 80%, #ffffff 100%);
+  background-image: -moz-linear-gradient(right, rgba(255, 255, 255, 0) 0%, #ffffff 80%, #ffffff 100%);
+  background-image: -ms-linear-gradient(right, rgba(255, 255, 255, 0) 0%, #ffffff 80%, #ffffff 100%);
+  background-image: -o-linear-gradient(right, rgba(255, 255, 255, 0) 0%, #ffffff 80%, #ffffff 100%);
+  background-image: linear-gradient(right, rgba(255, 255, 255, 0) 0%, #ffffff 80%, #ffffff 100%);
+}
+.markdown hr:after {
+  top: 0;
+  right: 0;
+  background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 80%, #ffffff 100%);
+  background-image: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 80%, #ffffff 100%);
+  background-image: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 80%, #ffffff 100%);
+  background-image: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 80%, #ffffff 100%);
+  background-image: linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 80%, #ffffff 100%);
+}
+.markdown table {
+  padding: 0;
+  margin-left: 1em;
+  min-width: 300px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #dddddd;
+  -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  -ms-border-radius: 0.5em;
+  -o-border-radius: 0.5em;
+  border-radius: 0.5em;
+}
+.markdown table caption {
+  padding: 0.5em 0 0.25em;
+}
+.markdown table thead th {
+  text-align: left;
+}
+.markdown table tbody {
+  margin: 0 1em;
+}
+.markdown table tbody td,
+.markdown table tbody th {
+  border-top: 1px solid #dddddd;
+}
+.markdown table tbody tr:nth-child(odd) td,
+.markdown table tbody tr:nth-child(odd) th {
+  background-color: #f9f9f9;
+}
+.markdown table td,
+.markdown table th {
+  padding: 0.5em 1em;
+  border-left: 1px solid #dddddd;
+}
+.markdown table td:first-child,
+.markdown table th:first-child {
+  border-left: none;
+}
+.markdown a {
+  margin: 0 0.25em;
+  color: #006699;
+}
+.markdown a[onclick],
+.markdown a[href^="javascript:"] {
+  margin: 0 0.25em;
+  padding: 0.25em 0.5em;
+  font-size: 0.8571428571428571em;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #96b3d3;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  border-radius: 0.25em;
+}
+.markdown a[onclick]:visited,
+.markdown a[href^="javascript:"]:visited {
+  color: #ffffff;
+}
+.markdown a:visited {
+  color: #551a8b;
+}
+.markdown a:focus {
+  outline: thin dotted;
+}
+.markdown a:active,
+.markdown a:hover {
+  outline: 0;
+}
+.markdown b,
+.markdown strong {
+  font-weight: bold;
+}
+.markdown u,
+.markdown em {
+  padding-bottom: .05em;
+  font-style: normal;
+  font-weight: normal;
+  border-bottom: 2px dotted #666666;
+}
+.markdown u {
+  text-decoration: none;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+.markdown em + em,
+.markdown em + u,
+.markdown u + em,
+.markdown u + u {
+  margin-left: 0.125em;
+}
+.markdown code {
+  padding: 0.05em 0.25em;
+  margin: 0 0.25em;
+  background: #f7f7f9;
+  font-family: monospace, serif;
+  font-size: 0.8571428571428571em;
+  /* 12px */
+
+  color: #dd1144;
+  border: 1px solid #e1e1e8;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  border-radius: 0.25em;
+}
+.markdown pre code {
+  padding: 0;
+  margin: 0;
+  font-size: 1em;
+  color: #666666;
+  background: none;
+  border: none;
+}
+.markdown img {
+  border: 0;
+}
+.markdown figure img {
+  display: block;
+  margin: 0 auto;
+  padding: 0.5em;
+  max-width: 97%;
+  border: 1px solid #cccccc;
+}
+.markdown figure figcaption {
+  display: block;
+  margin-top: 0.5em;
+  text-align: center;
+  font-style: italic;
+}
+.markdown cite {
+  font-style: inherit;
+}
+.markdown cite:before,
+.markdown cite:after {
+  content: "《";
+  line-height: inherit;
+}
+.markdown cite:after {
+  content: "》";
+}
+.markdown abbr[title] {
+  padding-bottom: 0.05em;
+  cursor: help;
+  border-bottom: 1px dotted;
+}
+.markdown dfn {
+  font-style: italic;
+}
+.markdown mark {
+  background: #ffff00;
+  color: #666666;
+}
+.markdown q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+.markdown small {
+  font-size: 80%;
+}
+.markdown sub,
+.markdown sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.markdown sup {
+  top: -0.5em;
+}
+.markdown sub {
+  bottom: -0.25em;
+}
+.markdown #disqus_thread {
+  margin-top: 2em;
+}
+.container .head,
+.markdown h1 {
+  margin: 0;
+  padding: 1em 2em;
+  max-width: 100%;
+  color: #ffffff;
+  overflow: hidden;
+  font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: #83a1d5;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.container .head:before,
+.markdown h1:before {
+  content: '';
+}
+.container .head h1,
+.markdown h1 h1 {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  line-height: 1.5;
+  color: #ffffff;
+  background-color: #83a1d5;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.container .head a,
+.markdown h1 a {
+  color: #ffffff;
+}
+.container .head p:before,
+.markdown h1 p:before,
+.container .head div:before,
+.markdown h1 div:before {
+  content: '';
+}
+.container .head-meta {
+  max-width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.container .head-meta a {
+  color: #ffffff;
+}

@@ -1,0 +1,44 @@
+body, h1, h2, h3, h4, h5, h6, div, p, ul, ol, li {
+	margin:0; padding:0;
+}
+li {list-style:none;}
+a {color:#069; text-decoration:none;}
+a:hover {text-decoration:underline;}
+body {
+	line-height: 1.5;
+	font-size:14px; 
+	font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", sans-serif;
+	color: #666;
+	background-color: #FEFEFE;
+}
+
+/* layout */
+.container {
+	overflow: hidden;
+	zoom: 1;
+}
+
+/* head */
+.container .head {
+	margin-bottom: 40px;
+}
+
+/* list */
+.list {
+	margin-top: 20px;
+}
+	.list h2 {
+		margin: 10px 20px;
+	}
+	.list ul {
+		margin: 5px 30px 0;
+	}
+
+/* foot */
+.ft {
+	margin: 40px 10px;
+	border-top: 1px dotted #CCC;
+}
+	.ft p {
+		padding-top: 5px;
+	}

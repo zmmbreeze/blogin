@@ -1,12 +1,8 @@
 extends layout
 
-append head
-	h1 #{entry.title}
-	div.head-meta #{entry.time}
+append stylesheet
+	link(href='/public/stylesheet/markdown.css', rel='stylesheet')
 
-append main
-	div.entry
-	|	!{entry.content}
-
-append side
-	include includes/info.jade
+append content
+	div.markdown
+		| !{entry.content}

@@ -1,15 +1,15 @@
 extends layout
 
-append head
-	h1 #{site.name}
+append content
+	div.head
+		h1 #{site.name}
+		div.meta #{site.description}
 
-append main
 	- if (items.length)
-		ul.articles
-			- items.forEach(function(item) {
-				li
-					a(href='#{item.url}', title='#{item.title}') #{item.title} 
-			- })
-
-append side
-	include includes/info.jade
+		div.list
+			h2 Articles
+			ul
+				- items.forEach(function(item) {
+					li
+						a(href='#{item.url}', title='#{item.title}') #{item.title} 
+				- })
