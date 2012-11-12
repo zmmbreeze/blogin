@@ -4,7 +4,8 @@ path = require('path')
 
 app = connect()
 	.use(connect.logger 'dev')
-	.use(connect.static('./'))
+	# must use path.resolve!
+	.use(connect.static(path.resolve('./')))
 	.listen(3000)
 
 util.puts('Server running on port 3000.')
