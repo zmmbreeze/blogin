@@ -107,16 +107,34 @@ dataApi =
 				locals.items = this.getPostList()
 				locals.archives = this.getArchiveList()
 				locals.pages = this.getPageList()
+				#rewrite keyword and description
+				locals.metaKeywords = locals.site.keywords
+				locals.metaDescription = locals.site.description
 			when 'archive'
 				archiveName = arg1
 				locals.pageName = archiveName
 				locals.items = this.getArchivePostList(archiveName)
+				#rewrite keyword and description
+				locals.metaKeywords = locals.site.keywords
+				locals.metaDescription = locals.site.description
 			when 'page'
 				locals.pageName = arg1.title
 				locals.entry = arg1
+				#rewrite keyword and description
+				locals.site.keywords = locals.site.keywords || ''
+				keywords = locals.site.keywords.split(',')
+				keywords.push(locals.pageName)
+				locals.metaKeywords = keywords.join(',')
+				locals.metaDescription = locals.pageName
 			when 'post'
 				locals.pageName = arg1.title
 				locals.entry = arg1
+				#rewrite keyword and description
+				locals.site.keywords = locals.site.keywords || ''
+				keywords = locals.site.keywords.split(',')
+				keywords.push(locals.pageName)
+				locals.metaKeywords = keywords.join(',')
+				locals.metaDescription = locals.pageName
 		return locals
 
 
