@@ -28,6 +28,6 @@
     "cli-color": "*",
     "moment": "*",
     "jade": "*",
-    "markdown": "0.4.0"
+    "marked": "0.2.6"
   }
 }

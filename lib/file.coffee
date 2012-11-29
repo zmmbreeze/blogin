@@ -1,7 +1,12 @@
 fs = require('fs')
 path = require('path')
 moment = require('moment')
-markdown = require('markdown').markdown
+marked = require('marked')
+
+marked.setOptions
+	gfm: true
+	pedantic: false
+	sanitize: false
 
 mkdir = exports.mkdir = (dest) ->
 	dest = path.resolve(dest)
@@ -112,4 +117,4 @@ exports.isMd = (filePath) ->
 	return filePath.slice(-3) is '.md'
 
 exports.readMdToHtml = (filePath) ->
-	file = markdown.toHTML(read(filePath))
+	file = marked(read(filePath))

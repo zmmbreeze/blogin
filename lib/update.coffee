@@ -200,6 +200,7 @@ rendApi =
 				content: file.readMdToHtml(postPath)
 				time: file.getMTime(postPath)
 			postFile = fileApi.srcToDest('post', postPath)
+			console.log(file.readMdToHtml(postPath))
 			file.write(postFile, compile(dataApi.getLocals('post', entry)))
 			if not keepQuiet
 				util.puts('File ' + postFile + ' created.')
