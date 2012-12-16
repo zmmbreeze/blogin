@@ -21,6 +21,9 @@ mkdir = exports.mkdir = (dest) ->
 dir = exports.dir = (src, notRecursive, onlyDir) ->
 	return [] if not fs.existsSync(src)
 
+	if !fs.statSync(src).isDirectory()
+		return [src]
+
 	filePaths = []
 	fs.readdirSync(src).forEach (filename, i) =>
 		# resolve file name to full path
@@ -69,11 +72,15 @@ getFileName = exports.getFileName = (filePath) ->
 # './data/post/hello-world.md' => 'Hello world'
 # './data/post/hello-world-border\\-left.md' => 'Hello world'
 exports.pathToTitle = (filePath) ->
+	###
 	fileName = getFileName(filePath).slice(0, -3)
 	fileName = fileName
 		.replace(/([^\\])\-/g, '$1 ')
 		.replace(/\\-/g, '-')
 	fileName.slice(0, 1).toUpperCase() + fileName.slice(1)
+	###
+	content = read(filePath)
+	return content.slice(0, content.indexOf('\n'))
 	
 
 # 'Hello World' => 'hello-world.md'
@@ -118,3 +125,7 @@ exports.isMd = (filePath) ->
 
 exports.readMdToHtml = (filePath) ->
 	file = marked(read(filePath))
+
+exports.sortByCreateTime = (paths) ->
+	return paths.sort (a, b) =>
+		return this.getCTime(a) < this.getCTime(b)

@@ -52,6 +52,7 @@ dataApi =
 		fileList = file.dir(postDir)
 		
 		items = []
+		fileList = file.sortByCreateTime(fileList)
 		fileList.forEach (filePath) =>
 			if not file.isMd(filePath)
 				return;
@@ -65,6 +66,7 @@ dataApi =
 		fileList = file.dir(pageDir)
 		
 		items = []
+		fileList = file.sortByCreateTime(fileList)
 		fileList.forEach (filePath) =>
 			if not file.isMd(filePath)
 				return;
@@ -78,6 +80,7 @@ dataApi =
 		archiveList = file.dir(archiveDir, true)
 
 		items = []
+		archiveList = file.sortByCreateTime(archiveList)
 		archiveList.forEach (filePath) =>
 			items.push
 				title: file.getFileName(filePath)
@@ -89,6 +92,7 @@ dataApi =
 		fileList = file.dir(postDir)
 		
 		items = []
+		fileList = file.sortByCreateTime(fileList)
 		fileList.forEach (filePath) =>
 			if not file.isMd(filePath)
 				return;
@@ -173,6 +177,8 @@ rendApi =
 		)
 
 		pages.forEach (pagePath) =>
+			if not file.isMd(pagePath)
+				return
 			pageName = file.getFileName(pagePath).slice(0, -3)
 			pageTitle = file.pathToTitle(pagePath)
 			entry =
@@ -193,6 +199,8 @@ rendApi =
 		)
 
 		posts.forEach (postPath) =>
+			if not file.isMd(postPath)
+				return
 			postName = file.getFileName(postPath).slice(0, -3)
 			postTitle = file.pathToTitle(postPath)
 			entry =
