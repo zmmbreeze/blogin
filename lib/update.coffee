@@ -55,9 +55,11 @@ fileApi =
 	getInfo: (type, filePath) ->
 		list = projectInfo[type]
 		filePath = path.relative(projectDir, filePath)
+		result = null;
 		list.forEach (item) =>
 			if (item.file is filePath)
-				return item
+				result = item
+		return result
 
 	getMTime: (type, filePath) ->
 		info = this.getInfo(type, filePath)
@@ -109,6 +111,8 @@ dataApi =
 		archiveList = archiveList.sort (a, b) =>
 			return a < b
 		archiveList.forEach (filePath) =>
+			if file.isHide(filePath)
+				return;
 			items.push
 				title: file.getFileName(filePath)
 				url: fileApi.srcToUrl('archive', filePath) + '/'
@@ -277,6 +281,19 @@ module.exports = (args) ->
 	infoFile = path.resolve(projectDir, 'data/info')
 	templateDir = path.resolve(projectDir, './public/template/')
 
+	projectInfo = file.readJSON(infoFile)
+	if not fs.existsSync(templateDir)
+		usage.puts('update')
+		return
+	# rend html
+	keepQuiet = arg.opt.indexOf('q') > 0
+	rendApi.index(keepQuiet)
+	rendApi.archive(keepQuiet)
+	rendApi.page(keepQuiet)
+	rendApi.post(keepQuiet)
+	rendApi.rss(keepQuiet)
+
+module.exports.addInfo = (type, info) ->
 	# rewrite info file
 	infos = {};
 	infos.post = [];
@@ -298,19 +315,4 @@ module.exports = (args) ->
 		infos.page.push(page)
 
 	file.write(infoFile, JSON.stringify(infos))
-
-
-	projectInfo = file.readJSON(infoFile)
-	if not fs.existsSync(templateDir)
-		usage.puts('update')
-		return
-	# rend html
-	keepQuiet = arg.opt.indexOf('q') > 0
-	rendApi.index(keepQuiet)
-	rendApi.archive(keepQuiet)
-	rendApi.page(keepQuiet)
-	rendApi.post(keepQuiet)
-	rendApi.rss(keepQuiet)
-
-
 

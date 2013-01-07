@@ -126,6 +126,9 @@ exports.mdToHtml = (filePath) ->
 exports.isMd = (filePath) ->
 	return filePath.slice(-3) is '.md'
 
+exports.isHide = (filePath) ->
+	return getFileName(filePath)[0] is '.'
+
 exports.readMdToHtml = (filePath) ->
 	file = marked(read(filePath))
 
