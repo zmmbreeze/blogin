@@ -7,10 +7,11 @@ moment = require('moment')
 file = require('./file')
 usage = require('./usage')
 parseArg = require('./arg').parse
+RSS = require('rss')
 
 templateDir = './public/template/'
 projectDir = './'
-
+projectInfo = {}
 
 fileApi =
 	getJadeFile: (type) ->
@@ -20,8 +21,11 @@ fileApi =
 		switch type
 			when 'page'
 				path.resolve(projectDir, 'data/pages')
-			else
+			when 'post'
 				path.resolve(projectDir, 'data/posts')
+			when 'archive'
+				path.resolve(projectDir, 'data/posts')
+
 
 	getDestFile: (type) ->
 		switch type
@@ -31,8 +35,12 @@ fileApi =
 				path.resolve(projectDir, 'post')
 			when 'page'
 				path.resolve(projectDir, 'page')
-			else
+			when 'index'
 				path.resolve(projectDir, 'index.html')
+			when 'rss'
+				path.resolve(projectDir, 'rss.xml')
+			else
+				projectDir
 
 	srcToDest: (type, srcFilePath) ->
 		relativePath = path.relative(this.getSrcFile(type), srcFilePath)
@@ -44,6 +52,24 @@ fileApi =
 		fileUrl = path.resolve(this.getDestFile(type), relativePath)
 		file.pathToUrl(file.mdToHtml(fileUrl), projectDir)
 
+	getInfo: (type, filePath) ->
+		list = projectInfo[type]
+		filePath = path.relative(projectDir, filePath)
+		list.forEach (item) =>
+			if (item.file is filePath)
+				return item
+
+	getMTime: (type, filePath) ->
+		info = this.getInfo(type, filePath)
+		if info then info.mtime
+
+	getCTime: (type, filePath) ->
+		info = this.getInfo(type, filePath)
+		if info then info.ctime
+
+	sortByCreateTime: (type, files) ->
+		return files.sort (a, b) =>
+			return this.getCTime(type, a) < this.getCTime(type, b)
 
 
 dataApi =
@@ -52,7 +78,7 @@ dataApi =
 		fileList = file.dir(postDir)
 		
 		items = []
-		fileList = file.sortByCreateTime(fileList)
+		fileList = fileApi.sortByCreateTime('post', fileList)
 		fileList.forEach (filePath) =>
 			if not file.isMd(filePath)
 				return;
@@ -66,7 +92,7 @@ dataApi =
 		fileList = file.dir(pageDir)
 		
 		items = []
-		fileList = file.sortByCreateTime(fileList)
+		fileList = fileApi.sortByCreateTime('page', fileList)
 		fileList.forEach (filePath) =>
 			if not file.isMd(filePath)
 				return;
@@ -80,7 +106,8 @@ dataApi =
 		archiveList = file.dir(archiveDir, true)
 
 		items = []
-		archiveList = file.sortByCreateTime(archiveList)
+		archiveList = archiveList.sort (a, b) =>
+			return a < b
 		archiveList.forEach (filePath) =>
 			items.push
 				title: file.getFileName(filePath)
@@ -92,7 +119,7 @@ dataApi =
 		fileList = file.dir(postDir)
 		
 		items = []
-		fileList = file.sortByCreateTime(fileList)
+		fileList = fileApi.sortByCreateTime('post', fileList)
 		fileList.forEach (filePath) =>
 			if not file.isMd(filePath)
 				return;
@@ -102,9 +129,12 @@ dataApi =
 		return items
 
 	getLocals: (type, arg1) ->
-		locals = 
+		locals =
 			site: file.readJSON(path.resolve(projectDir, './blogin.json'))
 			pageName: ''
+		siteUrl = locals.site.siteUrl
+		rssPath = if (siteUrl[siteUrl.length-1] == '/') then 'rss.xml' else '/rss.xml'
+		locals.site.rssUrl = siteUrl + rssPath
 
 		switch type
 			when 'index'
@@ -162,6 +192,8 @@ rendApi =
 		)
 
 		archives.forEach (archivePath) =>
+			if (archivePath[0] === '.')
+				return
 			archiveName = file.getFileName(archivePath)
 			archiveDestFile = path.resolve(destDir, archiveName, 'index.html')
 			file.write(archiveDestFile, compile(dataApi.getLocals('archive', archiveName)))
@@ -170,7 +202,6 @@ rendApi =
 
 	page: (keepQuiet) ->
 		srcDir = fileApi.getSrcFile('page')
-		destDir = fileApi.getDestFile('page')
 		pages = file.dir(srcDir, true)
 		compile = jade.compile(fileApi.getJadeFile('page'), 
 			filename: path.resolve(templateDir, 'includes')
@@ -179,12 +210,11 @@ rendApi =
 		pages.forEach (pagePath) =>
 			if not file.isMd(pagePath)
 				return
-			pageName = file.getFileName(pagePath).slice(0, -3)
 			pageTitle = file.pathToTitle(pagePath)
 			entry =
 				title: pageTitle
 				content: file.readMdToHtml(pagePath)
-				time: file.getMTime(pagePath)
+				time: fileApi.getMTime('page', pagePath)
 			pageFile = fileApi.srcToDest('page', pagePath)
 			file.write(pageFile, compile(dataApi.getLocals('page', entry)))
 			if not keepQuiet
@@ -192,7 +222,6 @@ rendApi =
 
 	post: (keepQuiet) ->
 		srcDir = fileApi.getSrcFile('post')
-		destDir = fileApi.getDestFile('post')
 		posts = file.dir(srcDir)
 		compile = jade.compile(fileApi.getJadeFile('post'), 
 			filename: path.resolve(templateDir, 'includes')
@@ -201,31 +230,87 @@ rendApi =
 		posts.forEach (postPath) =>
 			if not file.isMd(postPath)
 				return
-			postName = file.getFileName(postPath).slice(0, -3)
 			postTitle = file.pathToTitle(postPath)
 			entry =
 				title: postTitle
 				content: file.readMdToHtml(postPath)
-				time: file.getMTime(postPath)
+				time: fileApi.getMTime('post', postPath)
 			postFile = fileApi.srcToDest('post', postPath)
 			file.write(postFile, compile(dataApi.getLocals('post', entry)))
 			if not keepQuiet
 				util.puts('File ' + postFile + ' created.')
+
+	rss: (keepQuiet) ->
+		srcDir = fileApi.getSrcFile('post')
+		posts = file.dir(srcDir)
+		posts = file.sortByCreateTime(posts)
+		locals = dataApi.getLocals('index')
+		feedFile = fileApi.getDestFile('rss')
+		feed = new RSS
+			title: locals.site.name
+			description: locals.site.description
+			feed_url: path.join(locals.site.siteUrl, '/rss.xml')
+			site_url: locals.site.siteUrl
+			image_url: locals.site.favicon
+			author: locals.site.author
+
+		posts.forEach (postPath) =>
+			if not file.isMd(postPath)
+				return
+			postTitle = file.pathToTitle(postPath)
+			feed.item
+				title:  postTitle
+				description: file.readMdToHtml(postPath)
+				url: fileApi.srcToUrl('post', postPath)
+				date: fileApi.getMTime('post', postPath)
+
+		file.write(feedFile, feed.xml())
+		if not keepQuiet
+			util.puts('File ' + feedFile + ' created.')
+
 
 
 
 module.exports = (args) ->
 	arg = parseArg(args)
 	projectDir = path.resolve('./', arg.req[0] || './')
+	infoFile = path.resolve(projectDir, 'data/info')
 	templateDir = path.resolve(projectDir, './public/template/')
 
+	# rewrite info file
+	infos = {};
+	infos.post = [];
+	posts = file.dir(fileApi.getSrcFile('post'))
+	posts.forEach (filePath) =>
+		post = {};
+		post.file = path.relative(projectDir, filePath)
+		post.ctime = file.getCTime(filePath)
+		post.mtime = file.getMTime(filePath)
+		infos.post.push(post)
+
+	infos.page = [];
+	pages = file.dir(fileApi.getSrcFile('page'))
+	pages.forEach (filePath) =>
+		page = {};
+		page.file = path.relative(projectDir, filePath)
+		page.ctime = file.getCTime(filePath)
+		page.mtime = file.getMTime(filePath)
+		infos.page.push(page)
+
+	file.write(infoFile, JSON.stringify(infos))
+
+
+	projectInfo = file.readJSON(infoFile)
 	if not fs.existsSync(templateDir)
 		usage.puts('update')
 		return
+	# rend html
 	keepQuiet = arg.opt.indexOf('q') > 0
 	rendApi.index(keepQuiet)
 	rendApi.archive(keepQuiet)
 	rendApi.page(keepQuiet)
 	rendApi.post(keepQuiet)
+	rendApi.rss(keepQuiet)
+
 
 

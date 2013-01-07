@@ -3,5 +3,7 @@
   "description": "A static blog base on blogin.",
   "keywords": "website,blog,framework,static,blogin",
   "author": "MZhou / @zhoumm",
-  "email": "zmmbreeze0825@gmail.com"
+  "email": "zmmbreeze0825@gmail.com",
+  "siteUrl": "http://nodejs.in",
+  "favicon": "https://github.com//favicon.ico"
 }

@@ -64,7 +64,10 @@ copy = exports.copy = (src, dest) ->
 
 readJSON = exports.readJSON = (src) ->
 	content = read(src)
-	JSON.parse(content)
+	if content
+		return JSON.parse(content)
+	else
+		return ''
 
 getFileName = exports.getFileName = (filePath) ->
 	filePath.replace(path.dirname(filePath) + '/', '')
@@ -107,12 +110,12 @@ exports.pathToUrl = (filePath, root) ->
 
 exports.getCTime = (filePath, format) ->
 	stat = fs.statSync(filePath)
-	format = format || 'YYYY-MM-DD'
+	format = format || 'YYYY-MM-DD hh:mm:ss'
 	moment(stat.ctime).format(format)
 
 exports.getMTime = (filePath, format) ->
 	stat = fs.statSync(filePath)
-	format = format || 'YYYY-MM-DD'
+	format = format || 'YYYY-MM-DD hh:mm:ss'
 	moment(stat.mtime).format(format)
 
 exports.mdToHtml = (filePath) ->
