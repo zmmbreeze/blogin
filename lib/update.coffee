@@ -192,7 +192,7 @@ rendApi =
 		)
 
 		archives.forEach (archivePath) =>
-			if (archivePath[0] === '.')
+			if (archivePath[0] is '.')
 				return
 			archiveName = file.getFileName(archivePath)
 			archiveDestFile = path.resolve(destDir, archiveName, 'index.html')
