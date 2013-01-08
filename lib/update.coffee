@@ -87,6 +87,7 @@ dataApi =
 			items.push
 				title: file.pathToTitle(filePath)
 				url: fileApi.srcToUrl('post', filePath)
+				time: fileApi.getCTime('post', filePath)
 		return items
 
 	getPageList: () ->
@@ -101,6 +102,7 @@ dataApi =
 			items.push
 				title: file.pathToTitle(filePath)
 				url: fileApi.srcToUrl('page', filePath)
+				time: fileApi.getCTime('page', filePath)
 		return items
 
 	getArchiveList: () ->
@@ -130,6 +132,7 @@ dataApi =
 			items.push
 				title: file.pathToTitle(filePath)
 				url: fileApi.srcToUrl('post', filePath)
+				time: fileApi.getCTime('post', filePath)
 		return items
 
 	getLocals: (type, arg1) ->
