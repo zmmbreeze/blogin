@@ -135,3 +135,15 @@ exports.readMdToHtml = (filePath) ->
 exports.sortByCreateTime = (paths) ->
 	return paths.sort (a, b) =>
 		return this.getCTime(a) < this.getCTime(b)
+
+# path = './path/file' || ['./file1', './file2']
+exports.exists = (path) ->
+	if typeof path is not 'string'
+		result = true
+		for p in path
+			do (p) ->
+				if not fs.existsSync p
+					result = false
+		return result
+	else
+		return fs.existsSync(path)

@@ -16,6 +16,7 @@ commandsUsage =
 	update: 
 		'''
 		[-q] [project directory]
+
 		[-q]                    Use quiet mod, do not print log.
 		[project directory]     If not set directory then use current directory.
 		'''

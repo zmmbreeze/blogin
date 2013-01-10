@@ -7,6 +7,7 @@ moment = require('moment')
 file = require('./file')
 usage = require('./usage')
 parseArg = require('./arg').parse
+MyUtil = require('./MyUtil')
 RSS = require('rss')
 
 templateDir = './public/template/'
@@ -199,8 +200,8 @@ rendApi =
 		)
 
 		archives.forEach (archivePath) =>
-			if (archivePath[0] is '.')
-				return
+			if file.isHide(archivePath)
+				return;
 			archiveName = file.getFileName(archivePath)
 			archiveDestFile = path.resolve(destDir, archiveName, 'index.html')
 			file.write(archiveDestFile, compile(dataApi.getLocals('archive', archiveName)))
@@ -275,17 +276,17 @@ rendApi =
 		if not keepQuiet
 			util.puts('File ' + feedFile + ' created.')
 
-
-
-
 module.exports = (args) ->
 	arg = parseArg(args)
 	projectDir = path.resolve('./', arg.req[0] || './')
+	if not MyUtil.checkProjectDir(projectDir)
+		usage.puts('update')
+		return
 	infoFile = path.resolve(projectDir, 'data/info')
 	templateDir = path.resolve(projectDir, './public/template/')
 
 	projectInfo = file.readJSON(infoFile)
-	if not fs.existsSync(templateDir)
+	if not file.exists(templateDir)
 		usage.puts('update')
 		return
 	# rend html
@@ -295,27 +296,3 @@ module.exports = (args) ->
 	rendApi.page(keepQuiet)
 	rendApi.post(keepQuiet)
 	rendApi.rss(keepQuiet)
-
-module.exports.addInfo = (type, info) ->
-	# rewrite info file
-	infos = {};
-	infos.post = [];
-	posts = file.dir(fileApi.getSrcFile('post'))
-	posts.forEach (filePath) =>
-		post = {};
-		post.file = path.relative(projectDir, filePath)
-		post.ctime = file.getCTime(filePath)
-		post.mtime = file.getMTime(filePath)
-		infos.post.push(post)
-
-	infos.page = [];
-	pages = file.dir(fileApi.getSrcFile('page'))
-	pages.forEach (filePath) =>
-		page = {};
-		page.file = path.relative(projectDir, filePath)
-		page.ctime = file.getCTime(filePath)
-		page.mtime = file.getMTime(filePath)
-		infos.page.push(page)
-
-	file.write(infoFile, JSON.stringify(infos))
-
