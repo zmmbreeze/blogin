@@ -17,6 +17,30 @@ getInfoFile = exports.getInfoFile = (projectDir) ->
 		return false
 	infoFile = path.resolve(projectDir, 'data/info')
 
+exports.getInfo = (type, filePath, projectDir) ->
+	projectDir = projectDir || './'
+	infoFile = getInfoFile(projectDir)
+	if not infoFile
+		return false
+
+	projectInfo = file.readJSON(infoFile)
+	list = projectInfo[type]
+	filePath = path.relative(projectDir, filePath)
+	result = null;
+	list.forEach (item) =>
+		if (item.file is filePath)
+			result = item
+	return result
+
+exports.getInfos = (projectDir) ->
+	projectDir = projectDir || './'
+	infoFile = getInfoFile(projectDir)
+	if not infoFile
+		return false
+
+	file.readJSON(infoFile)
+
+
 # add info by absolute file path and type
 # type = 'post' | 'page'
 exports.addInfo = (type, filePath, projectDir) ->
@@ -37,7 +61,7 @@ exports.addInfo = (type, filePath, projectDir) ->
 	infos[type].push(info)
 	file.write(infoFile, JSON.stringify(infos, null, 4))
 
-	return true
+	return info
 
 # XXX developing
 exports.updateInfos = () ->

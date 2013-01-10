@@ -12,7 +12,7 @@ RSS = require('rss')
 
 templateDir = './public/template/'
 projectDir = './'
-projectInfo = {}
+projectInfo = null
 
 fileApi =
 	getJadeFile: (type) ->
@@ -53,14 +53,21 @@ fileApi =
 		fileUrl = path.resolve(this.getDestFile(type), relativePath)
 		file.pathToUrl(file.mdToHtml(fileUrl), projectDir)
 
+	# if not found info, it will generate it by file info on current machine!
 	getInfo: (type, filePath) ->
+		projectInfo = projectInfo || MyUtil.getInfos(projectDir)
 		list = projectInfo[type]
 		filePath = path.relative(projectDir, filePath)
 		result = null;
 		list.forEach (item) =>
 			if (item.file is filePath)
 				result = item
+		if not result
+			result = this.addInfo(type, filePath, projectDir)
 		return result
+
+	addInfo: (type, filePath) ->
+		return MyUtil.addInfo(type, filePath, projectDir)
 
 	getMTime: (type, filePath) ->
 		info = this.getInfo(type, filePath)
@@ -282,10 +289,8 @@ module.exports = (args) ->
 	if not MyUtil.checkProjectDir(projectDir)
 		usage.puts('update')
 		return
-	infoFile = path.resolve(projectDir, 'data/info')
 	templateDir = path.resolve(projectDir, './public/template/')
 
-	projectInfo = file.readJSON(infoFile)
 	if not file.exists(templateDir)
 		usage.puts('update')
 		return
