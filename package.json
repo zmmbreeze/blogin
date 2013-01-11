@@ -4,7 +4,7 @@
   "description": "A simple static blog framework, powered by Node.js.",
   "preferGlobal": true,
   "bin": {
-    "hexo": "./bin/blogin"
+    "blogin": "./bin/blogin"
   },
   "directories": {
     "lib": "./lib",

@@ -1,6 +1,8 @@
 util = require('util')
 clc  = require('cli-color')
 
+process.title = 'blogin'
+
 # commands
 module.exports =
 	help: (args) ->
