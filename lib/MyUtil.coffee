@@ -1,5 +1,6 @@
 path = require('path')
 util = require('util')
+spawn = require('child_process').spawn
 file = require('./file')
 
 checkProjectDir = exports.checkProjectDir = (dirPath) ->
@@ -90,3 +91,26 @@ exports.updateInfos = () ->
 		infos.page.push(page)
 
 	file.write(infoFile, JSON.stringify(infos, null, 4))
+
+###
+	command: 'git'
+	args: ['add', '-A']
+	options:
+		cwd: process.cwd
+	exit: () ->
+	stdout: () ->
+###
+exports.spawn = (options) ->
+	comm = spawn(options.command, options.args, options.options)
+
+	comm.stdout.setEncoding('utf8')
+	comm.stderr.setEncoding('utf8')
+
+	comm.stdout.on('data', options.stdout || (data) ->
+		console.log(data);
+
+	comm.stdout.on('data', options.stdout || (data) ->
+		console.log(data);
+
+	if options.exit
+		comm.on('exit', options.exit);
