@@ -4,7 +4,7 @@ spawn = require('child_process').spawn
 file = require('./file')
 
 checkProjectDir = exports.checkProjectDir = (dirPath) ->
-	dirPath = path.resolve('./', dirPath || './')
+	dirPath = path.resolve(process.cwd(), dirPath || './')
 	bloginConfigFile = path.relative(dirPath, './blogin.json')
 	if (file.exists(bloginConfigFile))
 		return true
@@ -106,11 +106,11 @@ exports.spawn = (options) ->
 	comm.stdout.setEncoding('utf8')
 	comm.stderr.setEncoding('utf8')
 
-	comm.stdout.on('data', options.stdout || (data) ->
-		console.log(data);
+	comm.stdout.on 'data', options.stdout or (data) ->
+		util.puts(data);
 
-	comm.stdout.on('data', options.stdout || (data) ->
-		console.log(data);
+	comm.stderr.on 'data', options.stderr or (data) ->
+		util.puts(data);
 
 	if options.exit
-		comm.on('exit', options.exit);
+		comm.on('exit', options.exit)

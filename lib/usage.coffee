@@ -58,7 +58,7 @@ module.exports =
 		# output commands description
 		for command, description of commandsDesc
 			util.print('   ' + clc.yellow(command) + createSpace(command, maxLength))
-			console.log(description)
+			util.puts(description)
 		util.puts('')
 
 	# show usage

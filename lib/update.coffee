@@ -285,7 +285,7 @@ rendApi =
 
 module.exports = (args) ->
 	arg = parseArg(args)
-	projectDir = path.resolve('./', arg.req[0] || './')
+	projectDir = path.resolve(process.cwd(), arg.req[0] || './')
 	if not MyUtil.checkProjectDir(projectDir)
 		usage.puts('update')
 		return
@@ -301,3 +301,5 @@ module.exports = (args) ->
 	rendApi.page(keepQuiet)
 	rendApi.post(keepQuiet)
 	rendApi.rss(keepQuiet)
+	util.puts('Update complete.')
+
