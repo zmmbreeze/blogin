@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "A simple static blog framework, powered by Node.js.",
   "preferGlobal": true,
+  "main": "./lib/command.js",
   "bin": {
     "blogin": "./bin/blogin"
   },
@@ -12,22 +13,26 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/zmmbreeze/blogin.git"
   },
   "bugs": {
-    "url": "https://github.com/tommy351/hexo/issues"
+    "url": "https://github.com/zmmbreeze/blogin/issues"
   },
   "keywords": ["website", "blog", "framework", "static", "blogin"],
-  "author": "Mzhou <zmmbreeze0825@gmail.com> (http://mzhou.me)",
+  "author": "MZhou <zmmbreeze0825@gmail.com> (http://mzhou.me)",
   "license": {
     "type": "MIT",
-    "url": ""
+    "url": "https://raw.github.com/zmmbreeze/blogin/master/MIT-LICENTSE.txt"
   },
   "dependencies": {
-    "connect": "*",
-    "cli-color": "*",
-    "moment": "*",
-    "jade": "*",
-    "marked": "0.2.6"
+    "cli-color": "0.2.x",
+    "connect": "2.6.x",
+    "jade": "0.27.x",
+    "marked": "0.2.x",
+    "moment": "1.7.x",
+    "rss": "0.0.x"
+  },
+  "engines": {
+    "node": ">=0.8"
   }
 }
