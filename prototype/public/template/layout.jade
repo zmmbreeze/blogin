@@ -5,6 +5,15 @@ html
 		block stylesheet
 	body
 		div.container
-			block content
-			include includes/foot
+			div.head-bg
+				input#infoTrigger.head-info-trigger(type="checkbox")
+				div.head
+					h1
+						a(href="/") #{site.name}
+					div.head-meta #{site.description}
+					label#infoTriggerLabel.head-more(for="infoTrigger", onclick="")
+				include includes/info
+			div.main
+				block content
+		include includes/ga
 		block script

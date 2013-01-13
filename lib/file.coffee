@@ -57,10 +57,27 @@ exports.writeIfNotExist = (src, content) ->
 		return true
 	else
 		return false
+###
+	src: '/home/user/a'
+	dest: '/home/user/b'
+	force: true
+###
+copy = exports.copy = (src, dest, force) ->
+	destExist = fs.existsSync(dest)
+	if not force and destExist
+		return false
 
-copy = exports.copy = (src, dest) ->
-	content = read(src)
-	write(dest, content)
+	if fs.statSync(src).isDirectory()
+		# mkdir
+		if not destExist
+			mkdir(dest)
+		# copy child
+		fs.readdirSync(src).forEach (filename, i) =>
+			copy(path.resolve(src, filename), path.resolve(dest, filename), force)
+	else
+		fs.createReadStream(src).pipe(fs.createWriteStream(dest))
+
+	return true
 
 readJSON = exports.readJSON = (src) ->
 	content = read(src)

@@ -13,24 +13,54 @@
  *          支持disqus
  *          修改四级标题样式，增加左边框
  *          去掉header的border-bottom
+ *          去掉iframe为block的样式，为了支持github start button这样的外部按钮
+ *      0.5 修改hr的width为max-width，确保小屏幕不会显示横向滚动条
+ *          增加文章右内边距，优化小屏幕、小宽度下的样式
+ *      0.6 增加列表的嵌套样式
+ *      0.7 拆分文件
+ *          增加可选的mutli-column支持
+ *          修改宽度默认值为60px
+ *          修改h3-icon默认值为空
+ *          修改pre样式，去掉左右边框、圆角等等样式。使其适应性更强一些。并设置背景默认为transparent
+ *          添加了两个配置：@pre-back-color 和 @pre-border-color
+ *          去掉了四级标题的边框和下边距合并，保证样式普通
+ *          修改行内code的上下内边距为0.15em，使其在WIN chrome下更高些
+ *          修改a的下划线样式，确保下划线不和中文文字粘在一起
+ *          优化字体，增加wenquanyi 微米黑字体，ubuntu linux firefox立马好看不少
+ *          修复em下划线的颜色为word-color
+ *          修复h1, h2内部的u,em,abbr的下划线颜色
+ *          修证h1, h2, h3的padding-left和padding-right值
+ *      0.8 增加居中、居右两种布局
+ *          删掉三四级标题的配置
+ *          删除普通a标签的左右边距
+ *      0.9 增加限制图片的宽度
+ *          增加section与article标签的支持
+ *          使pre标签不会自动换行
  *
  */
 /* ===========================================================
    Config
    =========================================================== */
+/* ==========================================================
+   Optional config
+   ========================================================== */
 /* ==========================================================================
    Entry header
    ========================================================================== */
 /* ==========================================================================
    Entry content
    ========================================================================== */
+/* ================================================
+   Multi-column
+   多栏样式，很多浏览器不支持，慎用！
+   ================================================ */
 .markdown {
   margin: 0;
   line-height: 1.62;
   color: #666666;
   word-wrap: break-word;
   font-size: 14px;
-  font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", sans-serif;
+  font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", "wenquanyi micro hei", sans-serif;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -47,8 +77,6 @@
   /* code */
 
   /* image */
-
-  /* other */
 
   /* 书名号(han.css) */
 
@@ -81,8 +109,14 @@
 .markdown ol,
 .markdown table,
 .markdown figure,
-.markdown iframe {
-  margin: 0.5em 0 0 0;
+.markdown iframe,
+.markdown section,
+.markdown article {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0;
 }
 .markdown h1:first-child,
@@ -99,13 +133,10 @@
 .markdown ol:first-child,
 .markdown table:first-child,
 .markdown figure:first-child,
-.markdown iframe:first-child {
+.markdown iframe:first-child,
+.markdown section:first-child,
+.markdown article:first-child {
   margin-top: 0;
-}
-.markdown iframe {
-  display: block;
-  /* fix slide share */
-
 }
 .markdown > h1,
 .markdown > h2,
@@ -121,15 +152,25 @@
 .markdown > ol,
 .markdown > table,
 .markdown > figure,
-.markdown > iframe {
+.markdown > iframe,
+.markdown > section,
+.markdown > article {
   max-width: 600px;
-  margin: 1em 0 0 0;
-  padding: 0 0 0 1em;
+  margin-top: 1em;
+  margin-bottom: 0;
+  display: block;
+  margin-left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   -o-box-sizing: border-box;
   box-sizing: border-box;
+}
+.markdown > table {
+  display: table;
 }
 .markdown h1,
 .markdown h2,
@@ -142,48 +183,46 @@
 .markdown h1,
 .markdown h2 {
   font-size: 2em;
-  color: #ffffff;
-  background-color: #96b3d3;
+  color: #666666;
+  background-color: transparent;
 }
 .markdown h1 a,
 .markdown h2 a {
-  color: #ffffff;
+  color: #666666;
+}
+.markdown h1 a,
+.markdown h2 a,
+.markdown h1 em,
+.markdown h2 em,
+.markdown h1 u,
+.markdown h2 u,
+.markdown h1 abbr[title],
+.markdown h2 abbr[title] {
+  border-bottom-color: #666666;
+}
+.markdown > h1 {
+  padding-right: 0.5em;
+  padding-left: 0.5em;
 }
 .markdown h2 {
   font-size: 1.5em;
 }
+.markdown > h2 {
+  padding-right: 0.6666666666666666em;
+  padding-left: 0.6666666666666666em;
+}
 .markdown h3 {
   font-size: 1.2em;
 }
-.markdown h3:before {
-  display: inline-block;
-  content: '\27BD';
-  margin-right: 0.5em;
-  vertical-align: middle;
-  font-size: 1em;
-  color: #96b3d3;
-}
-.markdown h4,
-.markdown h5,
-.markdown h6 {
-  margin-bottom: -1em;
+.markdown > h3 {
+  padding-right: 0.7692307692307692em;
+  padding-left: 0.7692307692307692em;
 }
 .markdown h4:before,
 .markdown h5:before,
 .markdown h6:before {
   content: '　　';
   display: inline;
-}
-.markdown h4:before,
-.markdown h5:before,
-.markdown h6:before {
-  margin-right: 0.5em;
-  border-right: 0.5em solid #CCC;
-}
-.markdown p,
-.markdown div {
-  /* text-indent: 2em; 避免继承，故不用 */
-
 }
 .markdown p:before,
 .markdown div:before {
@@ -218,29 +257,15 @@
 .markdown pre {
   padding: 1em 4em;
   line-height: 1.5;
-  /* 强制设置行高，避免难看 */
-
   white-space: pre;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  word-wrap: normal;
+  overflow: auto;
   font-family: monospace, serif;
   font-size: 0.8571428571428571em;
-  /* 12px */
-
   border: 1px solid #e1e1e8;
-  background-color: #f7f7f9;
-  -webkit-border-radius: 1em;
-  -moz-border-radius: 1em;
-  -ms-border-radius: 1em;
-  -o-border-radius: 1em;
-  border-radius: 1em;
-}
-.markdown > pre {
-  -webkit-border-radius: 0 1em 1em 0;
-  -moz-border-radius: 0 1em 1em 0;
-  -ms-border-radius: 0 1em 1em 0;
-  -o-border-radius: 0 1em 1em 0;
-  border-radius: 0 1em 1em 0;
+  border-right: none;
+  border-left: none;
+  background-color: #fbfbfb;
 }
 .markdown ul,
 .markdown ol {
@@ -251,12 +276,28 @@
 .markdown ol li {
   margin-top: 0.25em;
   list-style-position: outside;
-  /* 如果是inside，且li第一个元素是block元素，那么Firefox下会移到下一行*/
-
 }
 .markdown ul li:first-child,
 .markdown ol li:first-child {
   margin-top: 0;
+}
+.markdown ul li {
+  list-style-type: square;
+}
+.markdown ul li ul li {
+  list-style-type: disc;
+}
+.markdown ul li ul li ul li {
+  list-style-type: circle;
+}
+.markdown ol li {
+  list-style-type: decimal;
+}
+.markdown ol li ol li {
+  list-style-type: upper-roman;
+}
+.markdown ol li ol li ol li {
+  list-style-type: lower-roman;
 }
 .markdown li > ul,
 .markdown li > ol {
@@ -269,10 +310,12 @@
 }
 .markdown hr {
   position: relative;
-  margin: 3em auto 3em 0;
-  /* IE <= 9下如果margin-right: 0，那么会导致hr居中，而不是靠左*/
-
-  width: 600px;
+  margin-top: 3em;
+  margin-bottom: 3em;
+  margin-left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 600px;
   height: 0;
   background: none;
   border: none;
@@ -312,6 +355,7 @@
 .markdown table {
   padding: 0;
   margin-left: 1em;
+  margin-left: auto;
   min-width: 300px;
   border-collapse: collapse;
   border-spacing: 0;
@@ -349,15 +393,16 @@
   border-left: none;
 }
 .markdown a {
-  margin: 0 0.25em;
+  padding-bottom: 0.025em;
   color: #006699;
+  text-decoration: none;
+  border-bottom-color: #006699;
 }
 .markdown a[onclick],
 .markdown a[href^="javascript:"] {
   margin: 0 0.25em;
   padding: 0.25em 0.5em;
   font-size: 0.8571428571428571em;
-  text-decoration: none;
   color: #ffffff;
   background-color: #96b3d3;
   -webkit-border-radius: 0.25em;
@@ -365,19 +410,25 @@
   -ms-border-radius: 0.25em;
   -o-border-radius: 0.25em;
   border-radius: 0.25em;
+  border-bottom: none;
 }
 .markdown a[onclick]:visited,
 .markdown a[href^="javascript:"]:visited {
   color: #ffffff;
 }
-.markdown a:visited {
-  color: #551a8b;
-}
 .markdown a:focus {
   outline: thin dotted;
 }
-.markdown a:active,
+.markdown a:visited {
+  color: #551a8b;
+  border-bottom-color: #551a8b;
+}
 .markdown a:hover {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+.markdown a:hover,
+.markdown a:active {
   outline: 0;
 }
 .markdown b,
@@ -403,13 +454,11 @@
   margin-left: 0.125em;
 }
 .markdown code {
-  padding: 0.05em 0.25em;
+  padding: 0.15em 0.25em;
   margin: 0 0.25em;
-  background: #f7f7f9;
+  background: #fefefe;
   font-family: monospace, serif;
   font-size: 0.8571428571428571em;
-  /* 12px */
-
   color: #dd1144;
   border: 1px solid #e1e1e8;
   -webkit-border-radius: 0.25em;
@@ -427,6 +476,7 @@
   border: none;
 }
 .markdown img {
+  max-width: 600px;
   border: 0;
 }
 .markdown figure img {
@@ -456,7 +506,7 @@
 .markdown abbr[title] {
   padding-bottom: 0.05em;
   cursor: help;
-  border-bottom: 1px dotted;
+  border-bottom: 1px dotted #666666;
 }
 .markdown dfn {
   font-style: italic;
@@ -486,59 +536,4 @@
 }
 .markdown #disqus_thread {
   margin-top: 2em;
-}
-.container .head,
-.markdown h1 {
-  margin: 0;
-  padding: 1em 2em;
-  max-width: 100%;
-  color: #ffffff;
-  overflow: hidden;
-  font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  background-color: #83a1d5;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  box-sizing: border-box;
-}
-.container .head:before,
-.markdown h1:before {
-  content: '';
-}
-.container .head h1,
-.markdown h1 h1 {
-  margin: 0;
-  padding: 0;
-  max-width: 100%;
-  line-height: 1.5;
-  color: #ffffff;
-  background-color: #83a1d5;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  box-sizing: border-box;
-}
-.container .head a,
-.markdown h1 a {
-  color: #ffffff;
-}
-.container .head p:before,
-.markdown h1 p:before,
-.container .head div:before,
-.markdown h1 div:before {
-  content: '';
-}
-.container .head-meta {
-  max-width: 100%;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  box-sizing: border-box;
-}
-.container .head-meta a {
-  color: #ffffff;
 }

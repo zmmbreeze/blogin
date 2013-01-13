@@ -1,4 +1,16 @@
 {
-    "page": [],
-    "post": []
+    "page": [
+        {
+            "file": "data/pages/my-first-page.md",
+            "ctime": "2013-01-13 04:37:09",
+            "mtime": "2013-01-13 04:37:09"
+        }
+    ],
+    "post": [
+        {
+            "file": "data/posts/2012/hello-worldd.md",
+            "ctime": "2013-01-13 04:37:09",
+            "mtime": "2013-01-13 04:37:09"
+        }
+    ]
 }

@@ -1,17 +1,14 @@
 extends layout
 
 append content
-	div.head
-		h1 #{site.name}
-		div.meta #{site.description}
-
 	- if (items.length)
 		div.list
 			h2 Articles
 			ul
 				- items.forEach(function(item) {
 					li
-						a(href='#{item.url}', title='#{item.title}') #{item.title} 
+						a(href="#{item.url}", title="#{item.title}") #{item.title}
+						time #{item.time}
 				- })
 	- if (pages.length)
 		div.list
@@ -19,14 +16,16 @@ append content
 			ul
 				- pages.forEach(function(item) {
 					li
-						a(href='#{item.url}', title='#{item.title}') #{item.title} 
+						a(href="#{item.url}", title="#{item.title}") #{item.title}
+						time #{item.time}
 				- })
 
-		- if (archives.length)
-			div.list.archives
-				h2 Archives
-				ul
-					- archives.forEach(function(item) {
-						li
-							a(href='#{item.url}', title='#{item.title}') #{item.title} 
-					- })
+	- if (archives.length)
+		div.list.archives
+			h2 Archives
+			ul
+				- archives.forEach(function(item) {
+					li
+						a(href="#{item.url}", title="#{item.title}") #{item.title}
+						time #{item.time}
+				- })

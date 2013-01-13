@@ -2,23 +2,23 @@ util = require('util')
 clc  = require('cli-color')
 # command description
 commandsDesc =
-	deploy: 'Generate static files and deploy to github.'
+	deploy: 'Deploy static files to git server, like github.'
 	server: 'Start a server on http://localhost:3000 .'
 	update: 'Generate the static files.'
-	post: 'New post.'
-	page: 'New page.'
-	init: 'Init the project directory.'
+	post: 'Create post.'
+	page: 'Create page.'
+	init: 'Init the blog directory.'
 	help: 'Display help.'
 #command usage
 commandsUsage =
-	deploy: 'Generate static files and deploy to github.'
+	deploy: ''
 	server: 'Start a server on http://localhost:3000 .'
 	update: 
 		'''
-		[-q] [project directory]
+		[-q] [blog directory]
 
-		[-q]                    Use quiet mod, do not print log.
-		[project directory]     If not set directory then use current directory.
+		[-q]                 Use quiet mod, do not print log.
+		[blog directory]     If not set directory then use current directory.
 		'''
 	post: 
 		'''
@@ -33,7 +33,12 @@ commandsUsage =
 
 		-f     Force to rewrite exist file.
 		'''
-	init: 'Init the project directory.'
+	init:
+		'''
+		[blog directory]
+
+		[blog directory]     If not set directory then use current directory.
+		'''
 # create space to display
 createSpace = (command, maxLength) ->
 	spaceLength = maxLength - command.length

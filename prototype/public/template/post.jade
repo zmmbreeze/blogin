@@ -1,8 +1,23 @@
 extends layout
 
 append stylesheet
-	link(href='/public/stylesheet/markdown.css', rel='stylesheet')
+	link(href="/public/stylesheet/markdown.css", rel="stylesheet")
+	link(href="/public/google-code-prettify/prettify.css", rel="stylesheet")
 
 append content
 	div.markdown
 		| !{entry.content}
+		div#disqus_thread
+		noscript Please enable JavaScript to view the 
+			a(href="http://disqus.com/?ref_noscript") comments powered by Disqus.
+
+append script
+	script(src="/public/google-code-prettify/prettify.js")
+	script
+		(function() {
+			var pres = document.getElementsByTagName('pre');
+			for (var i=0,l=pres.length; i<l; i++) {
+				pres[i].className = 'prettyprint';
+			}
+			prettyPrint();
+		})();

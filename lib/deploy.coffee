@@ -21,6 +21,7 @@ module.exports = (args) ->
 	arg = parseArg(args)
 	projectDir = path.resolve(process.cwd(), arg.req[0] || './')
 	if not MyUtil.checkProjectDir(projectDir)
+		usage.puts('deploy')
 		return
 
 	exec 'git', ['add', '-A'], () =>

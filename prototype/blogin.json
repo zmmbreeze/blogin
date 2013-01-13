@@ -1,9 +1,9 @@
 {
-  "name": "Blogin's blog",
-  "description": "A static blog base on blogin.",
-  "keywords": "website,blog,framework,static,blogin",
-  "author": "MZhou / @zhoumm",
-  "email": "zmmbreeze0825@gmail.com",
+  "name": "[Blog name]",
+  "description": "[Blog description]",
+  "keywords": "[Blog keyowrds]",
+  "author": "[Your name]",
+  "email": "[Blog email]",
   "siteUrl": "http://nodejs.in",
   "favicon": "https://github.com//favicon.ico"
 }

@@ -19,5 +19,5 @@ module.exports =
 	page: (args) ->
 		require('./page.js')(args)
 	init: (args) ->
-		util.puts('This methods was not implemented')
-
+		require('./init')(args)
+		#util.puts('This methods was not implemented')
