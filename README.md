@@ -6,6 +6,7 @@ How to install
 2. `npm install -g blogin`
 3. `blogin init blogdir`
 4. `cd blogdir`
+5. Change blog config at "blogdir/blogin.json"
 4. `blogin update`
 5. `blogin server`
 6. Open `http://127.0.0.1:3000` in browser.

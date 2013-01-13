@@ -57,11 +57,14 @@ exports.writeIfNotExist = (src, content) ->
 		return true
 	else
 		return false
+
 ###
 	src: '/home/user/a'
 	dest: '/home/user/b'
 	force: true
 ###
+BUF_LENGTH = 64 * 1024
+_buff = new Buffer(BUF_LENGTH)
 copy = exports.copy = (src, dest, force) ->
 	destExist = fs.existsSync(dest)
 	if not force and destExist
@@ -75,7 +78,22 @@ copy = exports.copy = (src, dest, force) ->
 		fs.readdirSync(src).forEach (filename, i) =>
 			copy(path.resolve(src, filename), path.resolve(dest, filename), force)
 	else
+		###
+		if force and destExist
+			console.log(dest)
+			fs.unlinkSync(dest) # remove dest file
 		fs.createReadStream(src).pipe(fs.createWriteStream(dest))
+		###
+		fdr = fs.openSync(src, 'r')
+		fdw = fs.openSync(dest, 'w')
+		bytesRead = 1
+		pos = 0
+		while (bytesRead > 0)
+			bytesRead = fs.readSync(fdr, _buff, 0, BUF_LENGTH, pos)
+			fs.writeSync(fdw, _buff, 0, bytesRead)
+			pos += bytesRead
+		fs.closeSync(fdr)
+		fs.closeSync(fdw)
 
 	return true
 
