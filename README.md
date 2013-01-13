@@ -22,13 +22,13 @@ Usage
 ---
 blogin command:
 
-  deploy     Generate static files and deploy to git server, like github.
-  server     Start a server on http://localhost:3000 .
-  update     Generate the static files.
-  post       Create post.
-  page       Create page.
-  init       Init the project directory.
-  help       Display help.
+    deploy     Generate static files and deploy to git server, like github.
+    server     Start a server on http://localhost:3000 .
+    update     Generate the static files.
+    post       Create post.
+    page       Create page.
+    init       Init the project directory.
+    help       Display help.
 
 Custom theme
 ---
