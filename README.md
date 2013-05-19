@@ -36,3 +36,10 @@ Edit the file at "blogindir/public/" to custom your own theme.
 
 
 Please feel free to use blogin.
+
+Update
+---
+
+* 0.1
+* 0.1.1 <br/>bug fix
+

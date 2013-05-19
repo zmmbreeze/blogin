@@ -46,7 +46,10 @@ fileApi =
 	srcToDest: (type, srcFilePath) ->
 		relativePath = path.relative(this.getSrcFile(type), srcFilePath)
 		fileUrl = path.resolve(this.getDestFile(type), relativePath)
-		file.mdToHtml(fileUrl)
+		if (type)
+			file.mdToHtml(fileUrl)
+		else
+			return fileUrl
 
 	srcToUrl: (type, srcFilePath) ->
 		relativePath = path.relative(this.getSrcFile(type), srcFilePath)
@@ -223,14 +226,17 @@ rendApi =
 		)
 
 		pages.forEach (pagePath) =>
+			pageFile = fileApi.srcToDest('page', pagePath)
 			if not file.isMd(pagePath)
+				if not keepQuiet
+					util.puts('File ' + pageFile + ' created.')
+				file.copy(pagePath, pageFile, true)
 				return
 			pageTitle = file.pathToTitle(pagePath)
 			entry =
 				title: pageTitle
 				content: file.readMdToHtml(pagePath)
 				time: fileApi.getMTime('page', pagePath)
-			pageFile = fileApi.srcToDest('page', pagePath)
 			file.write(pageFile, compile(dataApi.getLocals('page', entry)))
 			if not keepQuiet
 				util.puts('File ' + pageFile + ' created.')
@@ -243,14 +249,17 @@ rendApi =
 		)
 
 		posts.forEach (postPath) =>
+			postFile = fileApi.srcToDest('post', postPath)
 			if not file.isMd(postPath)
+				if not keepQuiet
+					util.puts('File ' + postFile + ' created.')
+				file.copy(postPath, postFile, true)
 				return
 			postTitle = file.pathToTitle(postPath)
 			entry =
 				title: postTitle
 				content: file.readMdToHtml(postPath)
 				time: fileApi.getMTime('post', postPath)
-			postFile = fileApi.srcToDest('post', postPath)
 			file.write(postFile, compile(dataApi.getLocals('post', entry)))
 			if not keepQuiet
 				util.puts('File ' + postFile + ' created.')
