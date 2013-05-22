@@ -56,7 +56,7 @@ newFile = module.exports.newFile = (arg, filename, type) ->
 listFile = module.exports.listFile = (type) ->
 	dirname = dirnameMap[type]
 	filter = (filename) =>
-		return not (file.isDir(filename) and file.isMd(filename))
+		return (file.isDir(filename) or file.isMd(filename))
 	root = file.tree(dirname, filter)
 
 	if root.notExists
@@ -90,12 +90,12 @@ listFile = module.exports.listFile = (type) ->
 	# interact
 	tip =
 		"""
-		====================================
-		Shortcut: 
-			"q"   ==> quit.
-			"d"   ==> delete #{ type }.
-			"j/\u2191"  ==> selection up.
-			"k/\u2193"  ==> selection down.
+====================================
+Shortcut: 
+    "q"  ==>  quit.
+    "d"  ==>  delete #{ type }.
+    "j"  ==>  selection up.
+    "k"  ==>  selection down.
 		"""
 
 	updateCommandLine = () ->
@@ -108,12 +108,11 @@ listFile = module.exports.listFile = (type) ->
 	stdin.resume();
 	stdin.setEncoding('utf8');
 	stdin.on('data', (key) ->
-		util.print(key)
 		switch key
 			when 'q' then process.exit()
 			when 'd' then util.print('delete')
-			when 'j', '\u2191' then util.print('up')
-			when 'k', '\u2193' then util.print('down')
+			when 'j' then util.print('up')
+			when 'k' then util.print('down')
 	)
 
 	stdin.on('end',() ->
