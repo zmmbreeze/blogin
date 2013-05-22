@@ -67,6 +67,7 @@ fileApi =
 				result = item
 		if not result
 			result = this.addInfo(type, filePath, projectDir)
+			projectInfo[type].push(result)
 		return result
 
 	addInfo: (type, filePath) ->
@@ -84,6 +85,10 @@ fileApi =
 		return files.sort (a, b) =>
 			return this.getCTime(type, a) < this.getCTime(type, b)
 
+	clearFileList: (fileList) ->
+		fileList.filter (filePath) ->
+			return file.isMd(filePath)
+
 
 dataApi =
 	getPostList: () ->
@@ -91,10 +96,9 @@ dataApi =
 		fileList = file.dir(postDir)
 		
 		items = []
+		fileList = fileApi.clearFileList(fileList)
 		fileList = fileApi.sortByCreateTime('post', fileList)
 		fileList.forEach (filePath) =>
-			if not file.isMd(filePath)
-				return;
 			items.push
 				title: file.pathToTitle(filePath)
 				url: fileApi.srcToUrl('post', filePath)
@@ -106,10 +110,9 @@ dataApi =
 		fileList = file.dir(pageDir)
 		
 		items = []
+		fileList = fileApi.clearFileList(fileList)
 		fileList = fileApi.sortByCreateTime('page', fileList)
 		fileList.forEach (filePath) =>
-			if not file.isMd(filePath)
-				return;
 			items.push
 				title: file.pathToTitle(filePath)
 				url: fileApi.srcToUrl('page', filePath)
@@ -136,10 +139,9 @@ dataApi =
 		fileList = file.dir(postDir)
 		
 		items = []
+		fileList = fileApi.clearFileList(fileList)
 		fileList = fileApi.sortByCreateTime('post', fileList)
 		fileList.forEach (filePath) =>
-			if not file.isMd(filePath)
-				return;
 			items.push
 				title: file.pathToTitle(filePath)
 				url: fileApi.srcToUrl('post', filePath)
@@ -267,6 +269,7 @@ rendApi =
 	rss: (keepQuiet) ->
 		srcDir = fileApi.getSrcFile('post')
 		posts = file.dir(srcDir)
+		posts = fileApi.clearFileList(posts)
 		posts = file.sortByCreateTime(posts)
 		locals = dataApi.getLocals('index')
 		feedFile = fileApi.getDestFile('rss')
