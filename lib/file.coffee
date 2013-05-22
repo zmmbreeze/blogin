@@ -39,6 +39,36 @@ dir = exports.dir = (src, notRecursive, onlyDir) ->
 				filePaths.push(filename)
 	return filePaths
 
+tree = exports.tree = (src, filter) ->
+	if not fs.existsSync(src)
+		node = 
+			name: src,
+			notExists: true
+		return node
+
+	node =
+		name: src
+		isDir: fs.statSync(src).isDirectory()
+
+	if not node.isDir
+		return node
+
+	children = []
+	fs.readdirSync(src).forEach (filename, i) =>
+		filename = path.resolve(src, filename)
+
+		if (filter(filename) is false)
+			return
+
+		if fs.statSync(filename).isDirectory()
+			children.push(tree(filename, filter))
+		else
+			children.push
+				name: filename
+
+	node.children = children
+	return node
+
 read = exports.read = (src) ->
 	if fs.existsSync(src)
 		return fs.readFileSync(src, 'utf8')
@@ -182,3 +212,6 @@ exports.exists = (path) ->
 		return result
 	else
 		return fs.existsSync(path)
+
+exports.isDir = (path) ->
+	return fs.statSync(path).isDirectory()
