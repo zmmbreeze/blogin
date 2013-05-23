@@ -1,5 +1,6 @@
 util = require('util')
 moment = require('moment')
+clc = require('cli-color')
 file = require('./file')
 usage = require('./usage')
 parseArg = require('./arg').parse
@@ -12,6 +13,134 @@ dirnameWithYearMap =
 dirnameMap =
 	post: './data/posts'
 	page: './data/pages'
+
+class ControlList
+	constructor: (@type, @dirname, @filter) ->
+		@num = 0;
+		@listTip =
+			"""
+====================================
+#{ @type } list:
+			"""
+		@shortcutTip =
+			"""
+====================================
+Shortcut: 
+    #{clc.yellow('"q"')}  ==>  quit.
+    #{clc.yellow('"j"')}  ==>  selection up.
+    #{clc.yellow('"k"')}  ==>  selection down.
+    #{clc.yellow('"d"')}  ==>  delete #{ type }.
+    #{clc.yellow('"a"')}  ==>  add new #{ type }.
+			"""
+		this._createRoot()
+		@mdLength = this.getMdFiles().length
+		this._rend()
+		this._bindEvent()
+
+	_createRoot: () ->
+		@rootNode = file.tree(@dirname, @filter)
+
+		if @rootNode.notExists
+			util.puts('Path "' + @rootNode.name + '" not existed.')
+
+	iterate: (callback) ->
+		iterate = (node) ->
+			if (node.children)
+				for child in node.children
+					iterate(child)
+			else
+				callback(node)
+		iterate(@rootNode)
+
+	getMdFiles: () ->
+		files = [];
+		this.iterate (node) ->
+			files.push(node)
+		return files
+
+	selectFile: (num) ->
+		@num = this._resolveNum(num)
+		this._rend()
+
+	getSelectedFile: () ->
+		num = this._resolveNum(num)
+		return this.getMdFiles()[num]
+
+	deleteFile: (num) ->
+		selectFile = this.getSelectedFile(num)
+		file.trash(selectFile.name)
+		###
+		this._createRoot()
+		this._rend()
+		###
+
+	_resolveNum: (num) ->
+		if (num)
+			return if num < 0 then num + @mdLength else num % @mdLength
+		else
+			return @num
+
+	_rend: () ->
+		util.puts(clc.reset)
+		util.puts(clc.moveTo(0, 0))
+		this._rendTree()
+		util.puts(@shortcutTip)
+
+	_rendTree: () ->
+		util.puts(@listTip)
+		level = -1
+		num = -1
+		iterate = (node) =>
+			# calculate indent
+			level++
+			indent = ''
+			i = 0
+			l = level * 4
+			limit = l - 3
+			while i < l
+				i++
+				(symbol = ' ') if i < limit
+				(symbol = '|') if i is limit
+				(symbol = '-') if i > limit
+				indent += symbol
+
+			# setup filename
+			if (file.isMd(node.name))
+				# markdown(md) file
+				filename = file.pathToTitle(node.name)
+				num++
+				# underline selected filename
+				if (num is @num)
+					filename = clc.underline(filename)
+			else
+				# directory
+				filename = file.getFileName(node.name)
+
+			# iterate children
+			util.puts(indent + ' ' + filename)
+			if (node.children)
+				for child in node.children
+					iterate(child)
+			level--
+
+		iterate(@rootNode)
+
+	_bindEvent: () ->
+		stdin = process.stdin
+		stdin.setRawMode(true);
+		stdin.resume();
+		stdin.setEncoding('utf8');
+		stdin.on('data', (key) =>
+			switch key
+				when 'q', '\u0003' then process.exit()
+				when 'd'
+					this.deleteFile()
+				when 'j'
+					this.selectFile(@num + 1)
+				when 'k'
+					this.selectFile(@num - 1)
+		)
+
 
 module.exports = (args) ->
 	type = 'post'
@@ -57,67 +186,8 @@ listFile = module.exports.listFile = (type) ->
 	dirname = dirnameMap[type]
 	filter = (filename) =>
 		return (file.isDir(filename) or file.isMd(filename))
-	root = file.tree(dirname, filter)
 
-	if root.notExists
-		util.puts('Path "' + root.name + '" not existed.')
-		return
-
-	# print tree
-	printTree = (root, highlightLineNum) ->
-		level = -1
-		iterate = (node) ->
-			level++
-			indent = ''
-			i = 0
-			l = level * 4
-			limit = l - 3
-			while i < l
-				i++
-				(symbol = ' ') if i < limit
-				(symbol = '|') if i is limit
-				(symbol = '-') if i > limit
-				indent += symbol
-			util.puts(indent + file.getFileName(node.name))
-			if (node.children)
-				for child in node.children
-					iterate(child)
-
-			level--
-
-		iterate(root)
-
-	# interact
-	tip =
-		"""
-====================================
-Shortcut: 
-    "q"  ==>  quit.
-    "d"  ==>  delete #{ type }.
-    "j"  ==>  selection up.
-    "k"  ==>  selection down.
-		"""
-
-	updateCommandLine = () ->
-		printTree(root)
-		util.puts(tip)
-
-	updateCommandLine()
-	stdin = process.stdin
-	stdin.setRawMode(true);
-	stdin.resume();
-	stdin.setEncoding('utf8');
-	stdin.on('data', (key) ->
-		switch key
-			when 'q' then process.exit()
-			when 'd' then util.print('delete')
-			when 'j' then util.print('up')
-			when 'k' then util.print('down')
-	)
-
-	stdin.on('end',() ->
-		process.stdout.write('end')
-	)
+	new ControlList(type, dirname, filter)
 
 # delete file
 deleteFile = module.exports.deleteFile = (filename, type) ->

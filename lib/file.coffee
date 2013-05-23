@@ -135,7 +135,7 @@ readJSON = exports.readJSON = (src) ->
 		return ''
 
 getFileName = exports.getFileName = (filePath) ->
-	filePath.replace(path.dirname(filePath) + '/', '')
+	path.basename(filePath)
 
 # './data/post/hello-world.md' => 'Hello world'
 # './data/post/hello-world-border\\-left.md' => 'Hello world'
@@ -215,3 +215,23 @@ exports.exists = (path) ->
 
 exports.isDir = (path) ->
 	return fs.statSync(path).isDirectory()
+
+exports.getFileInfo = (filePath) ->
+	if not this.isMd(filePath)
+		return null
+	dirname = path.dirname(filePath)
+	arr = dirname.split(path.sep)
+	info =
+		title: this.pathToTitle(filePath)
+		basename: this.getFileName(filePath)
+		path: filePath
+		dirname: dirname
+		year: arr[arr.length - 1]
+		type: arr[arr.length - 2].slice(0, -1)
+	return info
+
+trashDir = './trash'
+exports.trash = (filePath) ->
+	mkdir(trashDir) if not fs.existsSync(trashDir)
+	newPath = path.resolve(trashDir, path.relative('./', filePath))
+	# TODO

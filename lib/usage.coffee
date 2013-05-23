@@ -52,7 +52,8 @@ createSpace = (command, maxLength) ->
 module.exports =
 	# help command
 	help: () ->
-		util.puts(require('../package.json').name + ' is ' + require('../package.json').description)
+		package = require('../package.json')
+		util.puts(package.name + ' is ' + package.description)
 		util.puts('')
 		# calculate maxLength
 		maxLength = 1
