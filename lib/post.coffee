@@ -77,16 +77,20 @@ Shortcut:
 		###
 
 	_resolveNum: (num) ->
-		if (num)
+		if (num?)
 			return if num < 0 then num + @mdLength else num % @mdLength
 		else
 			return @num
 
 	_rend: () ->
-		charm.erase('screen')
+		charm.erase('down')
+		# process.stdout.write('\x1B[J')
+		charm.cursor(false)
 		charm.position(0, 0)
+		# process.stdout.write('\x1B[0;0H')
 		this._rendTree()
 		util.puts(@shortcutTip)
+		charm.cursor(true)
 
 	_rendTree: () ->
 		util.puts(@listTip)
