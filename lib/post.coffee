@@ -1,6 +1,7 @@
 util = require('util')
 moment = require('moment')
 clc = require('cli-color')
+charm = require('charm')()
 file = require('./file')
 usage = require('./usage')
 parseArg = require('./arg').parse
@@ -20,7 +21,6 @@ class ControlList
 		@listTip =
 			"""
 ====================================
-#{ @type } list:
 			"""
 		@shortcutTip =
 			"""
@@ -33,6 +33,8 @@ Shortcut:
     #{clc.yellow('"a"')}  ==>  add new #{ type }.
 			"""
 		this._createRoot()
+		charm.pipe(process.stdout)
+		charm.reset()
 		@mdLength = this.getMdFiles().length
 		this._rend()
 		this._bindEvent()
@@ -81,8 +83,8 @@ Shortcut:
 			return @num
 
 	_rend: () ->
-		util.puts(clc.reset)
-		util.puts(clc.moveTo(0, 0))
+		charm.erase('screen')
+		charm.position(0, 0)
 		this._rendTree()
 		util.puts(@shortcutTip)
 
