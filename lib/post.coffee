@@ -30,12 +30,11 @@ Shortcut:
     #{clc.yellow('"j"')}  ==>  selection up.
     #{clc.yellow('"k"')}  ==>  selection down.
     #{clc.yellow('"d"')}  ==>  delete #{ type }.
-    #{clc.yellow('"a"')}  ==>  add new #{ type }.
 			"""
+		# #{clc.yellow('"a"')}  ==>  add new #{ type }.
 		this._createRoot()
 		charm.pipe(process.stdout)
 		charm.reset()
-		@mdLength = this.getMdFiles().length
 		this._rend()
 		this._bindEvent()
 
@@ -44,6 +43,8 @@ Shortcut:
 
 		if @rootNode.notExists
 			util.puts('Path "' + @rootNode.name + '" not existed.')
+
+		@mdLength = this.getMdFiles().length
 
 	iterate: (callback) ->
 		iterate = (node) ->
@@ -70,11 +71,40 @@ Shortcut:
 
 	deleteFile: (num) ->
 		selectFile = this.getSelectedFile(num)
-		file.trash(selectFile.name)
-		###
-		this._createRoot()
-		this._rend()
-		###
+		if (selectFile && not selectFile.children)
+			# remove
+			# MyUtil.removeInfo(@type, selectFile.name)
+			file.trash(selectFile.name)
+			# set msg
+			@msg = '\nFile "' + file.getFileName(selectFile.name) + '" deleted.\nUse "blogin trash" command to recover deleted file.'
+			# rend
+			this._createRoot()
+			this._rend()
+		else
+			@msg = 'Nothing selected.'
+			this._rend()
+
+	newFile: (titles) ->
+		filename = file.titleToPath(titles)
+		if filename is 'index.md'
+			util.puts("Can\'t use \"index\" as #{@type} title")
+			return
+
+		# add head
+		content = titles + '\n======\n'
+		# full file name
+		dirname = (dirnameWithYearMap[type]).replace('{year}', moment().format('YYYY'))
+		dataFile = dirname + filename
+
+		if file.writeIfNotExist(dataFile, content)
+			@msg = 'Created at ' + dataFile
+			MyUtil.addInfo(type, dataFile)
+			# rend
+			this._createRoot()
+			this._rend()
+		else
+			@msg = 'Fail to create, file "' + dataFile + '" was existed.\nUse [-f] option to rewrite the file.'
+			this._rend()
 
 	_resolveNum: (num) ->
 		if (num?)
@@ -83,7 +113,7 @@ Shortcut:
 			return @num
 
 	_rend: () ->
-		charm.erase('down')
+		charm.erase('screen')
 		# process.stdout.write('\x1B[J')
 		charm.cursor(false)
 		charm.position(0, 0)
@@ -91,6 +121,7 @@ Shortcut:
 		this._rendTree()
 		util.puts(@shortcutTip)
 		charm.cursor(true)
+		this._printStatus()
 
 	_rendTree: () ->
 		util.puts(@listTip)
@@ -118,6 +149,7 @@ Shortcut:
 				# underline selected filename
 				if (num is @num)
 					filename = clc.underline(filename)
+					indent = indent.replace(/-/g, '>')
 			else
 				# directory
 				filename = file.getFileName(node.name)
@@ -136,16 +168,41 @@ Shortcut:
 		stdin.setRawMode(true);
 		stdin.resume();
 		stdin.setEncoding('utf8');
+		newTitle = ''
 		stdin.on('data', (key) =>
+			if (key is '\u0003')
+				process.exit()
+
+			###
+			if (key is '\u000A' or key is '\u000D')
+				@_isPrompting = false
+				this.newFile(newTitle)
+
+			if (@_isPrompting)
+				newTitle += key
+				process.stdout.write(key)
+				return
+			###
+
 			switch key
-				when 'q', '\u0003' then process.exit()
+				when 'q' then process.exit()
 				when 'd'
 					this.deleteFile()
 				when 'j'
 					this.selectFile(@num + 1)
 				when 'k'
 					this.selectFile(@num - 1)
+			###
+			when 'a'
+				@_isPrompting = true
+				util.print('\nPlease input post title:')
+			###
 		)
+
+	_printStatus: () ->
+		if (@msg?)
+			util.puts(@msg)
+
 
 
 module.exports = (args) ->
@@ -167,6 +224,7 @@ module.exports = (args) ->
 
 # new file
 newFile = module.exports.newFile = (arg, filename, type) ->
+	# TODO make sure it's not exist in trash and info file
 	# word sperate by one space
 	postTitle = arg.req.join(' ')
 	# add head
@@ -194,7 +252,3 @@ listFile = module.exports.listFile = (type) ->
 		return (file.isDir(filename) or file.isMd(filename))
 
 	new ControlList(type, dirname, filter)
-
-# delete file
-deleteFile = module.exports.deleteFile = (filename, type) ->
-	return;

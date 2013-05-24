@@ -233,5 +233,20 @@ exports.getFileInfo = (filePath) ->
 trashDir = './trash'
 exports.trash = (filePath) ->
 	mkdir(trashDir) if not fs.existsSync(trashDir)
+	# generate new path
 	newPath = path.resolve(trashDir, path.relative('./', filePath))
-	# TODO
+	# mkdir
+	newDirname = path.dirname(newPath)
+	mkdir(newDirname) if not fs.existsSync(newDirname)
+	# rename
+	fs.renameSync(filePath, newPath)
+
+exports.recovery = (trashPath) ->
+	# generate new path
+	newPath = path.resolve('./', path.relative(trashDir, trashPath))
+	# mkdir
+	newDirname = path.dirname(newPath)
+	mkdir(newDirname) if not fs.existsSync(newDirname)
+	# rename
+	fs.renameSync(trashPath, newPath)
+

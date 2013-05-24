@@ -5,10 +5,11 @@ commandsDesc =
 	deploy: 'Deploy static files to git server, like github.'
 	server: 'Start a server on http://localhost:3000 .'
 	update: 'Generate the static files.'
-	post: 'Create post.'
-	page: 'Create page.'
+	post: 'Create post, show post tree, delete post.'
+	page: 'Create page, show page tree, delete page.'
 	init: 'Init the blog directory.'
 	help: 'Display help.'
+	trash: 'Show trash tree, recovery deleted file.'
 #command usage
 commandsUsage =
 	deploy: ''
@@ -24,20 +25,28 @@ commandsUsage =
 		'''
 		[-f] <postname>
 
-		<postname> Post name also file name, can't be 'index'
+		<postname> [optional] Post name also file name, can't be 'index'
 		-f         Force to rewrite exist file.
+		
+		`blogin post` to show post tree or delete post.
 		'''
 	page:
 		'''
 		[-f] <pagename>
 
 		-f     Force to rewrite exist file.
+		
+		`blogin page` to show page tree or delete page.
 		'''
 	init:
 		'''
 		[blog directory]
 
 		[blog directory]     If not set directory then use current directory.
+		'''
+	trash:
+		'''
+		`blogin trash` show trash tree, recovery deleted file.
 		'''
 # create space to display
 createSpace = (command, maxLength) ->
@@ -52,8 +61,8 @@ createSpace = (command, maxLength) ->
 module.exports =
 	# help command
 	help: () ->
-		package = require('../package.json')
-		util.puts(package.name + ' is ' + package.description)
+		pacage = require('../package.json')
+		util.puts(pacage.name + ' is ' + pacage.description)
 		util.puts('')
 		# calculate maxLength
 		maxLength = 1

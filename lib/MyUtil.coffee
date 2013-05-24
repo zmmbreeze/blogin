@@ -33,6 +33,23 @@ exports.getInfo = (type, filePath, projectDir) ->
 			result = item
 	return result
 
+exports.removeInfo = (type, filePath, projectDir) ->
+	projectDir = projectDir || './'
+	infoFile = getInfoFile(projectDir)
+	if not infoFile
+		return false
+
+	# generate info
+	projectInfo = file.readJSON(infoFile)
+	list = projectInfo[type]
+	filePath = path.relative(projectDir, filePath)
+	newList = list.filter (item) =>
+		return item.file isnt filePath
+
+	# write this info
+	projectInfo[type] = newList
+	file.write(infoFile, JSON.stringify(projectInfo, null, 4))
+
 exports.getInfos = (projectDir) ->
 	projectDir = projectDir || './'
 	infoFile = getInfoFile(projectDir)

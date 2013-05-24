@@ -3,9 +3,14 @@ usage = require('./usage')
 parseArg = require('./arg').parse
 
 module.exports = (args) ->
+	type = 'page'
 	arg = parseArg(args)
-	if (args.length is 0) or (arg.req.length is 0)
-		usage.puts('pages')
+	if (args.length is 0)
+		newFile.listFile(type)
+		return
+
+	if (arg.req.length is 0)
+		usage.puts(type)
 		return
 
 	filename = file.titleToPath(arg.req)
