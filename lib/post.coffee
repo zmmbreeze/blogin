@@ -70,6 +70,7 @@ Shortcut:
 		return this.getMdFiles()[num]
 
 	deleteFile: (num) ->
+		charm.erase('screen')
 		selectFile = this.getSelectedFile(num)
 		if (selectFile && not selectFile.children)
 			# remove
@@ -85,6 +86,7 @@ Shortcut:
 			this._rend()
 
 	newFile: (titles) ->
+		charm.erase('screen')
 		filename = file.titleToPath(titles)
 		if filename is 'index.md'
 			util.puts("Can\'t use \"index\" as #{@type} title")
@@ -113,7 +115,8 @@ Shortcut:
 			return @num
 
 	_rend: () ->
-		charm.erase('screen')
+		# only erase down to make sure it's not flash on OSX terminal when 'j/k'
+		charm.erase('down')
 		# process.stdout.write('\x1B[J')
 		charm.cursor(false)
 		charm.position(0, 0)

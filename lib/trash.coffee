@@ -65,6 +65,7 @@ Shortcut:
 		return this.getMdFiles()[num]
 
 	recoveryFile: (num) ->
+		charm.erase('screen')
 		selectFile = this.getSelectedFile(num)
 		if (selectFile && not selectFile.children)
 			# remove
@@ -85,7 +86,8 @@ Shortcut:
 			return @num
 
 	_rend: () ->
-		charm.erase('screen')
+		# only erase down to make sure it's not flash on OSX terminal when 'j/k'
+		charm.erase('down')
 		charm.cursor(false)
 		charm.position(0, 0)
 		this._rendTree()
