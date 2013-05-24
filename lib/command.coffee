@@ -21,3 +21,5 @@ module.exports =
 	init: (args) ->
 		require('./init')(args)
 		#util.puts('This methods was not implemented')
+	trash: (args) ->
+		require('./trash')(args)
