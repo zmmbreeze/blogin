@@ -22,13 +22,14 @@ Usage
 ---
 blogin command:
 
-    deploy     Generate static files and deploy to git server, like github.
+    deploy     Deploy static files to git server, like github.
     server     Start a server on http://localhost:3000 .
     update     Generate the static files.
-    post       Create post.
-    page       Create page.
-    init       Init the project directory.
+    post       Create post, show post tree, delete post.
+    page       Create page, show page tree, delete page.
+    init       Init the blog directory.
     help       Display help.
+    trash      Show trash tree, recovery deleted file.
 
 Custom theme
 ---
@@ -43,7 +44,7 @@ Update
 * 0.1.0
 * 0.1.1 <br/>bug fix.
 * 0.2.0 <br/>support delete post/page.
-  <br/> support post/page tree view, when using `blogin post` / `blogin page`.
+  <br/> support post/page tree view, when using `blogin post` / `blogin page`.![image](./other/post_command.png)
   <br/> new command `blogin trash`, to view or recovery deleted file. see `blogin help trash` for detail.
   <br/> support `blogin help commandName`.
   <br/> bug fix.
