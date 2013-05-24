@@ -44,6 +44,7 @@ Update
 * 0.1.1 <br/>bug fix.
 * 0.2.0 <br/>support delete post/page.
   <br/> support post/page tree view, when using `blogin post` / `blogin page`.
-  <br/> new command `blogin trash`, to view or recovery deleted file.
+  <br/> new command `blogin trash`, to view or recovery deleted file. see `blogin help trash` for detail.
+  <br/> support `blogin help commandName`.
   <br/> bug fix.
 

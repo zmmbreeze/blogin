@@ -1,5 +1,6 @@
 util = require('util')
 clc  = require('cli-color')
+parseArg = require('./arg').parse
 # command description
 commandsDesc =
 	deploy: 'Deploy static files to git server, like github.'
@@ -46,6 +47,8 @@ commandsUsage =
 		'''
 	trash:
 		'''
+
+		
 		`blogin trash` show trash tree, recovery deleted file.
 		'''
 # create space to display

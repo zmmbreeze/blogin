@@ -6,7 +6,7 @@ process.title = 'blogin'
 # commands
 module.exports =
 	help: (args) ->
-		require('./usage.js').help()
+		require('./usage.js').help(args)
 	deploy: (args) ->
 		require('./deploy')(args)
 		#util.puts('This methods was not implemented')
