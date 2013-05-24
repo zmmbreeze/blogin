@@ -40,6 +40,10 @@ Please feel free to use blogin.
 Update
 ---
 
-* 0.1
-* 0.1.1 <br/>bug fix
+* 0.1.0
+* 0.1.1 <br/>bug fix.
+* 0.2.0 <br/>support delete post/page.
+  <br/> support post/page tree view, when using `blogin post` / `blogin page`.
+  <br/> new command `blogin trash`, to view or recovery deleted file.
+  <br/> bug fix.
 

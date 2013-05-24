@@ -60,7 +60,16 @@ createSpace = (command, maxLength) ->
 
 module.exports =
 	# help command
-	help: () ->
+	help: (args) ->
+		arg = parseArg(args)
+		# for `blogin help commandName`
+		if (args.length isnt 0 && arg.req.length isnt 0)
+			commandName = arg.req[0]
+			if (commandsUsage[commandName])
+				this.puts(commandName)
+				return
+
+		# for `blogin help`
 		pacage = require('../package.json')
 		util.puts(pacage.name + ' is ' + pacage.description)
 		util.puts('')
