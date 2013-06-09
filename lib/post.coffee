@@ -9,7 +9,7 @@ MyUtil = require('./MyUtil')
 
 dirnameWithYearMap =
 	post: './data/posts/{year}/'
-	page: './data/pages/{year}/'
+	page: './data/pages/'
 
 dirnameMap =
 	post: './data/posts'

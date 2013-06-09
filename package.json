@@ -1,6 +1,6 @@
 {
   "name": "blogin",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "A simple static blog framework, powered by Node.js.",
   "preferGlobal": true,
   "main": "./lib/command.js",

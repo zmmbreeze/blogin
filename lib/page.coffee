@@ -1,13 +1,13 @@
-newFile = require('./post')
+post = require('./post')
 usage = require('./usage')
 parseArg = require('./arg').parse
-file = require('./file)
+file = require('./file')
 
 module.exports = (args) ->
 	type = 'page'
 	arg = parseArg(args)
 	if (args.length is 0)
-		newFile.listFile(type)
+		post.listFile(type)
 		return
 
 	if (arg.req.length is 0)
@@ -15,4 +15,4 @@ module.exports = (args) ->
 		return
 
 	filename = file.titleToPath(arg.req)
-	newFile(arg, filename, './data/pages/', 'page')
+	post.newFile(arg, filename, 'page')

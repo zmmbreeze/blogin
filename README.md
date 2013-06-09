@@ -48,4 +48,6 @@ Update
   <br/> new command `blogin trash`, to view or recovery deleted file. see `blogin help trash` for detail.
   <br/> support `blogin help commandName`.
   <br/> bug fix.
+* 0.2.1 <br/> bug fix #1.
+* 0.2.2 <br/> fix bug when create new page.
 
