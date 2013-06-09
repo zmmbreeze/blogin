@@ -1,6 +1,7 @@
 newFile = require('./post')
 usage = require('./usage')
 parseArg = require('./arg').parse
+file = require('./file)
 
 module.exports = (args) ->
 	type = 'page'
